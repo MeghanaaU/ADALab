@@ -1,0 +1,60 @@
+#include <stdio.h>
+#include <limits.h>
+
+#define MAX 10
+
+int dist[MAX][MAX], n;
+
+int calculateTourLength(int tour[], int n) {
+    int totalDist = 0;
+    for (int i = 0; i < n-1; i++) {
+        totalDist += dist[tour[i]][tour[i+1]];
+    }
+    totalDist += dist[tour[n-1]][tour[0]];
+    return totalDist;
+}
+
+void swap(int *a, int *b) {
+    int temp = *a;
+    *a = *b;
+    *b = temp;
+}
+
+void permute(int tour[], int l, int r, int *minDist) {
+    if (l == r) {
+        int distTemp = calculateTourLength(tour, n);
+        if (distTemp < *minDist) {
+            *minDist = distTemp;
+        }
+        return;
+    }
+
+    for (int i = l; i <= r; i++) {
+        swap(&tour[l], &tour[i]);
+        permute(tour, l + 1, r, minDist);
+        swap(&tour[l], &tour[i]);
+    }
+}
+
+int main() {
+    printf("Enter number of cities: ");
+    scanf("%d", &n);
+
+    printf("Enter the distance matrix:\n");
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < n; j++) {
+            scanf("%d", &dist[i][j]);
+        }
+    }
+
+    int tour[n];
+    for (int i = 0; i < n; i++) {
+        tour[i] = i;
+    }
+
+    int minDist = INT_MAX;
+    permute(tour, 0, n-1, &minDist);
+
+    printf("Minimum tour distance: %d\n", minDist);
+    return 0;
+}
