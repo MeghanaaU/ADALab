@@ -1,37 +1,43 @@
 #include <stdio.h>
 #include <string.h>
 
-void patternSearch(char str[], char pattern[]) {
-    int M = strlen(pattern);
-    int N = strlen(str);
-    int found = 0;
+int bruteForcePatternMatch(char text[], char pattern[]) {
+    int textLen = strlen(text);
+    int patternLen = strlen(pattern);
 
-    for (int i = 0; i <= N - M; i++) {
+    for (int i = 0; i <= textLen - patternLen; i++) {
         int j;
-        for (j = 0; j < M; j++) {
-            if (str[i + j] != pattern[j]) {
+        for (j = 0; j < patternLen; j++) {
+            if (text[i + j] != pattern[j]) {
                 break;
             }
         }
-        if (j == M) {
-            printf("Pattern found at index %d\n", i);
-            found = 1;
+
+        if (j == patternLen) {
+            return i;
         }
     }
-
-    if (!found) {
-        printf("Pattern not found\n");
-    }
+    return -1;
 }
 
 int main() {
-    char str[100], pattern[100];
-    printf("Enter the string: ");
-    scanf("%s", str);
-    printf("Enter the pattern: ");
-    scanf("%s", pattern);
+    char text[100], pattern[100];
 
-    patternSearch(str, pattern);
+    printf("Enter the text: ");
+    fgets(text, sizeof(text), stdin);
+    text[strcspn(text, "\n")] = '\0';
+
+    printf("Enter the pattern: ");
+    fgets(pattern, sizeof(pattern), stdin);
+    pattern[strcspn(pattern, "\n")] = '\0';
+
+    int result = bruteForcePatternMatch(text, pattern);
+
+    if (result != -1) {
+        printf("Pattern found at index: %d\n", result);
+    } else {
+        printf("Pattern not found\n");
+    }
 
     return 0;
 }
