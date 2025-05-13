@@ -1,0 +1,18 @@
+struct ListNode* deleteMiddle(struct ListNode* head) {
+    if (head == NULL) return NULL;
+    struct ListNode* prev = (struct ListNode*)malloc(sizeof(struct ListNode));
+    prev->val = 0;
+    prev->next = head;
+    struct ListNode* first = prev;
+    struct ListNode* last = head;
+    while (last != NULL && last->next != NULL) {
+        first = first->next;
+        last = last->next->next;
+    }
+    struct ListNode* temp = first->next;
+    first->next = first->next->next;
+    free(temp); 
+    struct ListNode* newHead = prev->next;
+    free(prev);
+    return newHead;
+}
