@@ -1,0 +1,17 @@
+int f(struct TreeNode* r,int x){
+    
+    if(!r)
+        return 0;
+    
+    if(!r->right&&!r->left)
+        return (x*10)+r->val;
+    
+    return f(r->right,(x*10)+r->val)+f(r->left,(x*10)+r->val);
+
+}
+
+int sumNumbers(struct TreeNode* root){
+    
+    return f(root,0);
+
+}
